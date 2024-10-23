@@ -22,11 +22,16 @@ app.set('view engine','hbs');
 app.get('/',(req,res)=>{
     res.send("working");
 });
+// app.get('/home',(req,res)=>{
+//     //let user = User.findOne({id:})
+//     res.render("home",{});
+// });
 app.get('/home',(req,res)=>{
-    //let user = User.findOne({id:})
-    res.render("home",{});
-});
-
+    res.render('home',{
+        name: "Thor",
+        marvelname: "God Of Thunder",
+    })
+})
 
 //app config start
 app.listen(port, ()=>{

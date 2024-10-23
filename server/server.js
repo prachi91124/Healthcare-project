@@ -3,6 +3,8 @@ const express=require("express");
 const connectDb=require("./config/dbConnection");
 const errorHandler=require("./middleware/errorHandler");
 const cors = require("cors");
+const hbs = require("hbs");
+const path = require("path");
 
 const dotenv = require("dotenv");
 dotenv.config();
@@ -26,16 +28,19 @@ app.set('view engine','hbs');
 //     //let user = User.findOne({id:})
 //     res.render("home",{});
 // });
+hbs.registerPartials(path.join(__dirname,'/views/partials'));
 app.get('/home',(req,res)=>{
     res.render('home',{
         name: "Thor",
         marvelname: "God Of Thunder",
+        prefix:"MCU"
     })
 })
 
 app.get('/',(req,res)=>{
     res.render('users',{
-        users:[{id:1,username:"Nitesh", age:23},{id:1, username:"Akash",age:24}]
+        users:[{id:1,username:"Nitesh", age:23},{id:1, username:"Akash",age:24}],
+        prefix:"User Page",
     })
 })
 //app config start

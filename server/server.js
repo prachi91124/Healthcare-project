@@ -16,10 +16,15 @@ app.use(cors());
 //error handling middleware
 app.use(errorHandler);
 
+app.set('view engine','hbs');
 
 //routes below
 app.get('/',(req,res)=>{
     res.send("working");
+});
+app.get('/home',(req,res)=>{
+    //let user = User.findOne({id:})
+    res.render("home",{});
 });
 
 

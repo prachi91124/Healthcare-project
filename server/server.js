@@ -19,9 +19,9 @@ app.use(errorHandler);
 app.set('view engine','hbs');
 
 //routes below
-app.get('/',(req,res)=>{
-    res.send("working");
-});
+// app.get('/',(req,res)=>{
+//     res.send("working");
+// });
 // app.get('/home',(req,res)=>{
 //     //let user = User.findOne({id:})
 //     res.render("home",{});
@@ -33,6 +33,11 @@ app.get('/home',(req,res)=>{
     })
 })
 
+app.get('/',(req,res)=>{
+    res.render('users',{
+        users:[{id:1,username:"Nitesh", age:23},{id:1, username:"Akash",age:24}]
+    })
+})
 //app config start
 app.listen(port, ()=>{
     console.log(`Server running on port http://localhost:${port}`);

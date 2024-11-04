@@ -44,7 +44,8 @@ app.get('/',(req,res)=>{
     })
 })
 
-app.use("/api",require("./routes/userRoutes"));
+app.use("/api/user",require("./routes/userRoutes"));
+app.use("/api/doctor",require("./routes/doctorDetailsRoutes"));
 
 app.use(errorHandler);
 

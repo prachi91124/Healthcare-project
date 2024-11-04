@@ -2,7 +2,8 @@ const express=require("express");
 const router=express.Router();
 
 const{
-    registerUser
+    registerUser,
+    loginUser,
 }=require("../controllers/userController");
 
 router.post("/register", registerUser);

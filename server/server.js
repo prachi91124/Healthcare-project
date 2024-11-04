@@ -19,6 +19,7 @@ app.use(cors());
 app.use(errorHandler);
 
 app.set('view engine','hbs');
+hbs.registerPartials(path.join(__dirname,'/views/partials'));
 
 //routes below
 // app.get('/',(req,res)=>{
@@ -28,7 +29,6 @@ app.set('view engine','hbs');
 //     //let user = User.findOne({id:})
 //     res.render("home",{});
 // });
-hbs.registerPartials(path.join(__dirname,'/views/partials'));
 app.get('/home',(req,res)=>{
     res.render('home',{
         name: "Thor",
@@ -43,6 +43,11 @@ app.get('/',(req,res)=>{
         prefix:"User Page",
     })
 })
+
+app.use("/api",require("./routes/userRoutes"));
+
+app.use(errorHandler);
+
 //app config start
 app.listen(port, ()=>{
     console.log(`Server running on port http://localhost:${port}`);

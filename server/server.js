@@ -5,6 +5,8 @@ const errorHandler=require("./middleware/errorHandler");
 const cors = require("cors");
 const hbs = require("hbs");
 const path = require("path");
+const multer = require("multer");
+// const upload = multer({dest:'uploads/'})
 
 const dotenv = require("dotenv");
 dotenv.config();
@@ -47,6 +49,7 @@ app.get('/',(req,res)=>{
 app.use("/api/user",require("./routes/userRoutes"));
 app.use("/api/doctor",require("./routes/doctorDetailsRoutes"));
 
+//Error handling middleware
 app.use(errorHandler);
 
 //app config start
@@ -54,3 +57,20 @@ app.listen(port, ()=>{
     console.log(`Server running on port http://localhost:${port}`);
 });
 
+app.post('/profile', upload.single('avengers'),function(req,res,next){
+    console.log(req.body);
+    console.log(req.file);
+    return res.redirect("/home");
+})
+
+const storage = multer.diskStorage({
+    destination: function(req,file,cb){
+        cb(null,'/tmp/my-uploads')
+    },
+    filename: function(req, file, cb) {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random()*IE9)
+        cb(null,file.fieldname + '-' + uniqueSuffix)
+    }
+})
+
+const upload = multer ({storage: storage})

@@ -6,9 +6,11 @@
     <title>Document</title>
 </head>
 <body>
+    <img src="{{fileUrl}}" alt="" style="max-width: 300px;">
     {{>header}}
     <h1>Avengers Assemble!</h1>
     <p>{{name}} {{marvelname}}</p>
+
     <div>
         <form action="/profile" method="post" enctype="multipart/form-data">
         <input type="file" name="avengers"/>

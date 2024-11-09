@@ -1,5 +1,6 @@
 const express=require("express");
 const router=express.Router();
+const { jwtAuthMiddleware } = require("../middleware/jwtAuthMiddleware");
 
 const{
     registerUser,
@@ -8,6 +9,6 @@ const{
 
 router.post("/register", registerUser);
 
-router.post("/login",loginUser);
+router.post("/login",jwtAuthMiddleware,loginUser);
 
 module.exports=router;

@@ -12,6 +12,6 @@ const { jwtAuthMiddleware } = require("../middleware/jwtAuthMiddleware");
 router.post("/create", jwtAuthMiddleware, registerDoctor);
 
 // Register for doctor login
-router.post("/doctor", doctorDetails);
+router.post("/", doctorDetails);
 
 module.exports = router;

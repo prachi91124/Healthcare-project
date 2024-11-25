@@ -1,6 +1,7 @@
 const asyncHandler = require("express-async-handler");
 const bcrypt = require("bcrypt");
 const User = require("../models/userModel");
+const { generateJwtToken } = require("../middleware/jwtAuthMiddleware");
 require("dotenv").config();
 
 const registerUser = asyncHandler(async (req, res) => {
@@ -15,15 +16,12 @@ const registerUser = asyncHandler(async (req, res) => {
     if (userExists) {
         return res.status(400).json({ message: "User already exists" });
     }
-
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
-
+    
     const user = await User.create({
         name,
         email,
         phoneNumber,
-        password: hashedPassword,
+        password: await bcrypt.hash(password, 12),
     });
 
     res.status(201).json({ message: "user registered successfully", user });
@@ -38,42 +36,43 @@ const loginUser = asyncHandler(async (req, res) => {
 
     const userExists = await User.findOne({ email });
     if (!userExists) {
-        return res.status(201);
+        return res.status(401).json({message:"Invalid credentials"});
     }
 
     const passCheck = await bcrypt.compare(password, userExists.password);
-    if (passCheck) {
-        res.status(200);
-    } else {
-        res.status(201);
+    if (!passCheck) {
+        res.status(401).json({message:"Invalid credentials"});
     }
+    const token = generateJwtToken({id: userExists._id, email: userExists.email});
+
+    res.status(200).json({message:"Login successful",token});
 });
 
 const getUserProfile = asyncHandler(async (req, res) => {
     try {
-        const email = req.body;
-        const data = await User.findOne(email);
-        if (!data) return res.status(401).json({ err });
-        return res.status(200).json({ data });
+        const user = await User.findById(req.user.id);
+        if (!user) return res.status(404).json({ message:"User not found" });
+        return res.status(200).json({ user});
     } catch (err) {
-        return res.status(500).json({ err,message });
+        return res.status(500).json({ errpr: err.message,message:"Server Error" });
     }
 });
 
 const updateUserProfile = async (req, res) => {
     try {
-        const { email } = req.body;
-        if (!email)
-            return res.status(400).json({ message: "Email is required" });
+        const { email,updateData } = req.body;
+        if (!email || !updateData){
+            return res.status(400).json({ message: "Email and update data is required" });
+        }
         const updatedUser = await User.findOneAndUpdate({ email }, updateData, {
             new: true,
         });
-        if (!updatedUser)
+        if (!updatedUser){
             return res.status(404).json({ message: "User not found" });
-
+        }
         res.status(200).json({ data: updatedUser });
     } catch (err) {
-        res.status(500).json({ message: "error", error: err.message });
+        res.status(500).json({ message: "Error updating USer", error: err.message });
     }
 };
 module.exports = {

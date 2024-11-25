@@ -4,23 +4,23 @@ const userSchema = mongoose.Schema(
     {
         name: {
             type: String,
-            require: [true, "please add your name"],
+            required: [true, "please add your name"],
         },
         email: {
             type: String,
-            require: [true, "please add your Email"],
+            required: [true, "please add your Email"],
         },
         phoneNumber: {
             type: String,
-            require: [true, "please add your Phone Number"],
+            required: [true, "please add your Phone Number"],
         },
         password: {
             type: String,
-            require: [true, "please add your password"],
+            required: [true, "please add your password"],
         },
     },
     {
-        timestamps: true,
+        timestamps: true
     }
 );
 const  User = mongoose.model("User", userSchema);

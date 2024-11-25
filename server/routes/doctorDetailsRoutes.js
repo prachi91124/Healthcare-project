@@ -1,15 +1,13 @@
 const express = require("express");
 const router = express.Router();
-
+const {validateJwtToken} = require("../middleware/jwtAuthMiddleware");
 const {
     doctorDetails,
     registerDoctor,
 } = require("../controllers/doctorDetailsController");
 
-const { jwtAuthMiddleware } = require("../middleware/jwtAuthMiddleware");
-
 // Route to register a new doctor
-router.post("/create", jwtAuthMiddleware, registerDoctor);
+router.post("/create", validateJwtToken, registerDoctor);
 
 // Register for doctor login
 router.post("/", doctorDetails);
